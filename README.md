@@ -18,4 +18,11 @@ No uploads 📡
 
 ---
 
-## 📦 Try
+## 📦 Try It Yourself
+
+### 🧠 Run from Source (for developers)
+
+1. Clone repo
+```bash
+git clone https://github.com/ankuryadaviimb/pdf-unlocker.git
+cd pdf-unlocker
