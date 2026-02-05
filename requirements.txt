@@ -1,0 +1,8 @@
+altgraph==0.17.5
+macholib==1.16.4
+packaging==26.0
+pyinstaller==6.18.0
+pyinstaller-hooks-contrib==2026.0
+PyPDF2==3.0.1
+setuptools==80.10.2
+tkinterdnd2==0.4.3
