@@ -1,3 +1,11 @@
+## ⬇️ Download
+
+Get the latest macOS app here:
+
+https://github.com/ankuryadaviimb/pdf-unlocker/releases
+
+---
+
 # 🔓 PDF Unlocker (macOS Utility)
 
 A simple, offline macOS tool to remove password protection from PDF files.
