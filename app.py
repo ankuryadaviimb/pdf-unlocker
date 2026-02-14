@@ -12,7 +12,7 @@ class PDFUnlocker(TkinterDnD.Tk):
         super().__init__()
 
         self.title("PDF Unlocker")
-        self.geometry("450x300")
+        self.geometry("450x340")
 
         self.pdf_path = None
 
@@ -24,46 +24,69 @@ class PDFUnlocker(TkinterDnD.Tk):
         )
         title.pack(pady=10)
 
-        # Drop Area
-        self.drop_area = tk.Label(
+        # ---------------------------
+        # Combined Drop Zone + Browse Tile
+        # ---------------------------
+        self.drop_tile = tk.Frame(
             self,
-            text="Drag PDF Here\nor Use Browse Button",
-            width=45,
-            height=4,
             bg="#f0f0f0",
-            relief="ridge"
+            relief="ridge",
+            borderwidth=2,
         )
-        self.drop_area.pack(pady=10)
+        self.drop_tile.pack(padx=20, pady=10, fill="x")
 
-        self.drop_area.drop_target_register(DND_FILES)
-        self.drop_area.dnd_bind('<<Drop>>', self.on_drop)
+        self.drop_label = tk.Label(
+            self.drop_tile,
+            text="Drag and Drop PDF Here",
+            font=("Arial", 11),
+            bg="#f0f0f0",
+            height=3,
+        )
+        self.drop_label.pack(fill="x", padx=10, pady=(10, 0))
 
-        # Browse Button
+        or_label = tk.Label(
+            self.drop_tile,
+            text="or",
+            font=("Arial", 9),
+            fg="#888888",
+            bg="#f0f0f0",
+        )
+        or_label.pack()
+
         browse_btn = tk.Button(
-            self,
+            self.drop_tile,
             text="Browse PDF",
-            command=self.browse_file
+            command=self.browse_file,
         )
-        browse_btn.pack(pady=5)
+        browse_btn.pack(pady=(0, 10))
 
+        # Register drag-and-drop on the entire tile and its children
+        self.drop_tile.drop_target_register(DND_FILES)
+        self.drop_tile.dnd_bind("<<Drop>>", self.on_drop)
+        self.drop_label.drop_target_register(DND_FILES)
+        self.drop_label.dnd_bind("<<Drop>>", self.on_drop)
+
+        # ---------------------------
         # Password
+        # ---------------------------
         pass_label = tk.Label(self, text="Enter Password:")
         pass_label.pack(pady=5)
 
         self.password_entry = tk.Entry(self, show="*", width=30)
         self.password_entry.pack()
 
+        # ---------------------------
         # Unlock Button
+        # ---------------------------
         self.unlock_btn = tk.Button(
             self,
             text="Unlock PDF",
-            command=self.unlock_pdf
+            command=self.unlock_pdf,
         )
         self.unlock_btn.pack(pady=15)
 
         # Bind Enter Key
         self.bind("<Return>", self.on_enter_key)
-
 
     # ---------------------------
     # File Selection
@@ -78,7 +101,6 @@ class PDFUnlocker(TkinterDnD.Tk):
         if file_path:
             self.load_file(file_path)
 
-
     def on_drop(self, event):
 
         file_path = event.data.strip("{}")
@@ -89,18 +111,19 @@ class PDFUnlocker(TkinterDnD.Tk):
 
         self.load_file(file_path)
 
-
     def load_file(self, file_path):
 
         self.pdf_path = file_path
 
         filename = os.path.basename(file_path)
 
-        self.drop_area.config(
+        self.drop_label.config(
             text=f"Loaded:\n{filename}",
             bg="#dff0d8"
         )
+        self.drop_tile.config(bg="#dff0d8")
 
+        self.password_entry.focus_set()
 
     # ---------------------------
     # Unlock Logic
@@ -145,7 +168,6 @@ class PDFUnlocker(TkinterDnD.Tk):
         except Exception as e:
             messagebox.showerror("Error", str(e))
 
-
     # ---------------------------
     # UX Helpers
     # ---------------------------
@@ -154,18 +176,17 @@ class PDFUnlocker(TkinterDnD.Tk):
 
         self.unlock_pdf()
 
-
     def reset_ui(self):
 
         self.pdf_path = None
 
-        self.drop_area.config(
-            text="Drag PDF Here\nor Use Browse Button",
+        self.drop_label.config(
+            text="Drag and Drop PDF Here",
             bg="#f0f0f0"
         )
+        self.drop_tile.config(bg="#f0f0f0")
 
         self.password_entry.delete(0, tk.END)
-
 
 
 if __name__ == "__main__":
